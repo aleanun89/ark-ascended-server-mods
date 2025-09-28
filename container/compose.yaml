@@ -17,7 +17,7 @@ services:
       - MAX_PLAYERS=8
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
-      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+      - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
 
   scorchedearth:
@@ -38,7 +38,7 @@ services:
       - MAX_PLAYERS=8
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
-      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+      - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
   ragnarok:
     image: ark-ascended-server-alex:latest
@@ -58,6 +58,6 @@ services:
       - MAX_PLAYERS=8
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
-      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+      - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
 # No se requieren volumes de Docker, se usan bind mounts locales
