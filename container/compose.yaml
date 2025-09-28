@@ -8,7 +8,7 @@ services:
       - SESSION_NAME=Valoria Ark ASA - The Island
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=TheIsland_WP
-      - SERVER_ADMIN_PASSWORD=Alex_25.
+      - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
@@ -27,7 +27,7 @@ services:
       - SESSION_NAME=Valoria Ark ASA - Scorched Earth
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=ScorchedEarth_WP
-      - SERVER_ADMIN_PASSWORD=Alex_25.
+      - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
@@ -46,7 +46,7 @@ services:
       - SESSION_NAME=Valoria Ark ASA - Ragnarok
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=Ragnarok_WP
-      - SERVER_ADMIN_PASSWORD=Alex_25.
+      - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster

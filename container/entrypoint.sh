@@ -121,7 +121,7 @@ fi
 
 # Mods support
 if [ -n "${MOD_IDS}" ]; then
-    LAUNCH_COMMAND="${LAUNCH_COMMAND} -mods=${MOD_IDS}"
+    LAUNCH_COMMAND="${LAUNCH_COMMAND} -automanagedmods -mods=${MOD_IDS}"
 fi
 
 # According to Wiki, ServerAdminPassword must be the last "?" deliniated Argument
