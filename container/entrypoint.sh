@@ -95,6 +95,27 @@ if ! [ -f "${ARK_PATH}/ShooterGame/Saved/Logs/ShooterGame.log" ]; then
     touch "${ARK_PATH}/ShooterGame/Saved/Logs/ShooterGame.log"
 fi
 
+
+# Incluir mejoras de extra.ini en Game.ini si existe
+EXTRA_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/extra.ini"
+GAME_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+if [ -f "$EXTRA_INI_PATH" ]; then
+    echo "$(timestamp) INFO: Incluyendo mejoras de extra.ini en Game.ini sin duplicados"
+    # Para cada línea key=value en extra.ini
+    while IFS= read -r line; do
+        # Saltar líneas vacías o comentarios
+        [[ -z "$line" || "$line" =~ ^# ]] && continue
+        key="${line%%=*}"
+        value="${line#*=}"
+        # Si la clave existe en Game.ini, reemplazarla
+        if grep -q "^$key=" "$GAME_INI_PATH"; then
+            sed -i "s|^$key=.*|$key=$value|" "$GAME_INI_PATH"
+        else
+            echo "$key=$value" >> "$GAME_INI_PATH"
+        fi
+    done < "$EXTRA_INI_PATH"
+fi
+
 # Link logfile to stdout of pid 1 so we can see logs
 ln -sf /proc/1/fd/1 "${ARK_PATH}/ShooterGame/Saved/Logs/ShooterGame.log"
 

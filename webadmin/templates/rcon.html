@@ -26,6 +26,9 @@
         <form method="post" action="{{ url_for('restart_server') }}" style="display:inline;">
             <button type="submit" class="btn btn-danger">Reiniciar servidor</button>
         </form>
+        <form method="post" action="{{ url_for('restart_map_route') }}" style="display:inline;">
+            <button type="submit" class="btn btn-warning">Reiniciar mapa y recargar .ini</button>
+        </form>
         <hr>
         <a href="/" class="btn btn-secondary">Volver</a>
     </div>

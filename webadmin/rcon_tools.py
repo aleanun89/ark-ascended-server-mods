@@ -24,3 +24,6 @@ def save_world():
 
 def restart_server():
     return send_rcon_command('DoExit')
+
+def restart_map():
+    return send_rcon_command('DoRestartMap')

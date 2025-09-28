@@ -13,10 +13,12 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=947033,929800,929868
+      - MOD_IDS=947033,929800,929868,1019389
       - MAX_PLAYERS=8
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
+      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+
 
   scorchedearth:
     image: ark-ascended-server-alex:latest
@@ -32,10 +34,11 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=947033,929800,929868
+      - MOD_IDS=947033,929800,929868,1019389
       - MAX_PLAYERS=8
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
+      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
   ragnarok:
     image: ark-ascended-server-alex:latest
@@ -51,9 +54,10 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=947033,929800,929868
+      - MOD_IDS=947033,929800,929868,1019389
       - MAX_PLAYERS=8
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
+      - ./container/extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
 # No se requieren volumes de Docker, se usan bind mounts locales

@@ -69,6 +69,7 @@ RUN mkdir "$ARK_PATH" \
     && echo "${CONTAINER_UID}:${CONTAINER_GID}" > /home/steam/expected_filesystem_permissions
     
 COPY entrypoint.sh /home/steam/entrypoint.sh
+COPY utils.sh /home/steam/utils.sh
 
 WORKDIR /home/steam
 

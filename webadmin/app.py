@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 from backup import create_backup, list_backups, restore_backup
-from rcon_tools import send_rcon_command, save_world, restart_server
+from rcon_tools import send_rcon_command, save_world, restart_server, restart_map
 
 app = Flask(__name__)
 app.secret_key = 'arkadminsecretkey'
@@ -70,6 +70,13 @@ def save_world_route():
 @app.route('/rcon/restart', methods=['POST'])
 def restart_server_route():
     output = restart_server()
+    flash(f'Respuesta: {output}')
+    return redirect(url_for('rcon_page'))
+
+# Reiniciar mapa y recargar .ini
+@app.route('/rcon/restartmap', methods=['POST'])
+def restart_map_route():
+    output = restart_map()
     flash(f'Respuesta: {output}')
     return redirect(url_for('rcon_page'))
 
