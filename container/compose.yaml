@@ -1,6 +1,6 @@
 services:
   theisland:
-    image: sknnr/ark-ascended-server:latest
+    image: ark-ascended-server-alex:latest
     ports:
       - "7777:7777/udp"
       - "27020:27020/tcp"
@@ -18,7 +18,7 @@ services:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
 
   scorchedearth:
-    image: sknnr/ark-ascended-server:latest
+    image: ark-ascended-server-alex:latest
     ports:
       - "7778:7777/udp"
       - "27021:27020/tcp"
@@ -36,7 +36,7 @@ services:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
 
   ragnarok:
-    image: sknnr/ark-ascended-server:latest
+    image: ark-ascended-server-alex:latest
     ports:
       - "7779:7777/udp"
       - "27022:27020/tcp"
