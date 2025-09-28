@@ -13,7 +13,7 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=2957414236,2957414256
+      - MOD_IDS=947033,929800,929868
       - MAX_PLAYERS=8
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
@@ -32,7 +32,7 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=2957414236,2957414256
+      - MOD_IDS=947033,929800,929868
       - MAX_PLAYERS=8
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
@@ -51,7 +51,7 @@ services:
       - RCON_PORT=27020
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
-      - MOD_IDS=2957414236,2957414256
+      - MOD_IDS=947033,929800,929868
       - MAX_PLAYERS=8
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
