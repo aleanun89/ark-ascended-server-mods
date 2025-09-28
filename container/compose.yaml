@@ -5,7 +5,7 @@ services:
       - "7777:7777/udp"
       - "27020:27020/tcp"
     environment:
-      - SESSION_NAME=Ark ASA - The Island
+      - SESSION_NAME=Valoria Ark ASA - The Island
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=TheIsland_WP
       - SERVER_ADMIN_PASSWORD=Alex_25.
@@ -14,6 +14,7 @@ services:
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=2957414236,2957414256
+      - MAX_PLAYERS=8
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
 
@@ -23,7 +24,7 @@ services:
       - "7778:7777/udp"
       - "27021:27020/tcp"
     environment:
-      - SESSION_NAME=Ark ASA - Scorched Earth
+      - SESSION_NAME=Valoria Ark ASA - Scorched Earth
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=ScorchedEarth_WP
       - SERVER_ADMIN_PASSWORD=Alex_25.
@@ -32,6 +33,7 @@ services:
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=2957414236,2957414256
+      - MAX_PLAYERS=8
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
 
@@ -41,7 +43,7 @@ services:
       - "7779:7777/udp"
       - "27022:27020/tcp"
     environment:
-      - SESSION_NAME=Ark ASA - Ragnarok
+      - SESSION_NAME=Valoria Ark ASA - Ragnarok
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=Ragnarok_WP
       - SERVER_ADMIN_PASSWORD=Alex_25.
@@ -50,6 +52,7 @@ services:
       - CLUSTER_ID=arkcluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=2957414236,2957414256
+      - MAX_PLAYERS=8
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
 

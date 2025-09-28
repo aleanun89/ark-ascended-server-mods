@@ -100,6 +100,9 @@ ln -sf /proc/1/fd/1 "${ARK_PATH}/ShooterGame/Saved/Logs/ShooterGame.log"
 
 # Build Ark Ascended launch command
 LAUNCH_COMMAND="${SERVER_MAP}?SessionName=${SESSION_NAME}?RCONEnabled=True?RCONPort=${RCON_PORT}"
+if [ -n "${MAX_PLAYERS}" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND}?MaxPlayers=${MAX_PLAYERS}"
+fi
 if [ -n "${SERVER_PASSWORD}" ]; then
     LAUNCH_COMMAND="${LAUNCH_COMMAND}?ServerPassword=${SERVER_PASSWORD}"
 fi
