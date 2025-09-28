@@ -1,18 +1,56 @@
 services:
-  ark-ascended:
+  theisland:
     image: sknnr/ark-ascended-server:latest
     ports:
       - "7777:7777/udp"
       - "27020:27020/tcp"
     environment:
-      - SESSION_NAME=Ark Ascended Containerized
-      - SERVER_PASSWORD=PleaseChangeMe
+      - SESSION_NAME=Ark ASA - The Island
+      - SERVER_PASSWORD=Valoria
       - SERVER_MAP=TheIsland_WP
-      - SERVER_ADMIN_PASSWORD=AlsoChangeMe
+      - SERVER_ADMIN_PASSWORD=Alex_25.
       - GAME_PORT=7777
       - RCON_PORT=27020
+      - CLUSTER_ID=arkcluster
+      - ENABLE_CROSS_TRAVEL=true
+      - MOD_IDS=2957414236,2957414256
     volumes:
-      - ark-persistent-data:/home/steam/ark/ShooterGame/Saved
+      - ./theisland:/home/steam/ark/ShooterGame/Saved
 
-volumes:
-  ark-persistent-data:
+  scorchedearth:
+    image: sknnr/ark-ascended-server:latest
+    ports:
+      - "7778:7777/udp"
+      - "27021:27020/tcp"
+    environment:
+      - SESSION_NAME=Ark ASA - Scorched Earth
+      - SERVER_PASSWORD=Valoria
+      - SERVER_MAP=ScorchedEarth_WP
+      - SERVER_ADMIN_PASSWORD=Alex_25.
+      - GAME_PORT=7777
+      - RCON_PORT=27020
+      - CLUSTER_ID=arkcluster
+      - ENABLE_CROSS_TRAVEL=true
+      - MOD_IDS=2957414236,2957414256
+    volumes:
+      - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
+
+  ragnarok:
+    image: sknnr/ark-ascended-server:latest
+    ports:
+      - "7779:7777/udp"
+      - "27022:27020/tcp"
+    environment:
+      - SESSION_NAME=Ark ASA - Ragnarok
+      - SERVER_PASSWORD=Valoria
+      - SERVER_MAP=Ragnarok_WP
+      - SERVER_ADMIN_PASSWORD=Alex_25.
+      - GAME_PORT=7777
+      - RCON_PORT=27020
+      - CLUSTER_ID=arkcluster
+      - ENABLE_CROSS_TRAVEL=true
+      - MOD_IDS=2957414236,2957414256
+    volumes:
+      - ./ragnarok:/home/steam/ark/ShooterGame/Saved
+
+# No se requieren volumes de Docker, se usan bind mounts locales

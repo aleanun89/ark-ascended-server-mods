@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
-ARG IMAGE_VERSION="v1.0.0-devel"
-ARG MAINTAINER="https://github.com/jsknnr/ark-ascended-server"
+ARG IMAGE_VERSION="v1.0.0-alex_25"
+ARG MAINTAINER="https://github.com/aleanun89/ark-ascended-server-mods"
 
 ARG CONTAINER_GID=10000
 ARG CONTAINER_UID=10000

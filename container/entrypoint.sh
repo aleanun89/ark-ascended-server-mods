@@ -108,6 +108,19 @@ if [ -n "${EXTRA_SETTINGS}" ]; then
     LAUNCH_COMMAND="${LAUNCH_COMMAND}${EXTRA_SETTINGS}"
 fi
 
+# Cluster support
+if [ -n "${CLUSTER_ID}" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND}?ClusterId=${CLUSTER_ID}"
+fi
+if [ -n "${ENABLE_CROSS_TRAVEL}" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND}?CrossTravelEnabled=${ENABLE_CROSS_TRAVEL}"
+fi
+
+# Mods support
+if [ -n "${MOD_IDS}" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND} -mods=${MOD_IDS}"
+fi
+
 # According to Wiki, ServerAdminPassword must be the last "?" deliniated Argument
 LAUNCH_COMMAND="${LAUNCH_COMMAND}?ServerAdminPassword=${SERVER_ADMIN_PASSWORD}"
 
@@ -116,10 +129,6 @@ LAUNCH_COMMAND="${LAUNCH_COMMAND} -port=${GAME_PORT}"
 
 if [ -n "${EXTRA_FLAGS}" ]; then
     LAUNCH_COMMAND="${LAUNCH_COMMAND} ${EXTRA_FLAGS}"
-fi
-
-if [ -n "${MODS}" ]; then
-    LAUNCH_COMMAND="${LAUNCH_COMMAND} -mods=${MODS}"
 fi
 
 # RCONEnabled in server start args doesn't seem to actually enabled RCON, so let's do it manually
