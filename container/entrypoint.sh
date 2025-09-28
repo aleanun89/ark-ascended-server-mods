@@ -99,19 +99,45 @@ fi
 # Incluir mejoras de extra.ini en Game.ini si existe
 EXTRA_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/extra.ini"
 GAME_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+GAME_USERSETTINGS_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
 if [ -f "$EXTRA_INI_PATH" ]; then
-    echo "$(timestamp) INFO: Incluyendo mejoras de extra.ini en Game.ini sin duplicados"
-    # Para cada línea key=value en extra.ini
+    echo "$(timestamp) INFO: Procesando extra.ini para aplicar configuraciones profesionales"
+    current_section=""
     while IFS= read -r line; do
         # Saltar líneas vacías o comentarios
         [[ -z "$line" || "$line" =~ ^# ]] && continue
+        # Detectar sección
+        if [[ "$line" =~ ^\[(.*)\]$ ]]; then
+            current_section="${BASH_REMATCH[1]}"
+            continue
+        fi
         key="${line%%=*}"
         value="${line#*=}"
-        # Si la clave existe en Game.ini, reemplazarla
-        if grep -q "^$key=" "$GAME_INI_PATH"; then
-            sed -i "s|^$key=.*|$key=$value|" "$GAME_INI_PATH"
+        # Elegir archivo destino según sección
+        case "$current_section" in
+            ServerSettings)
+                target_file="$GAME_USERSETTINGS_PATH"
+                ;;
+            *)
+                target_file="$GAME_INI_PATH"
+                ;;
+        esac
+        # Si la clave existe en el archivo destino, reemplazarla
+        if grep -q "^$key=" "$target_file"; then
+            sed -i "s|^$key=.*|$key=$value|" "$target_file"
         else
-            echo "$key=$value" >> "$GAME_INI_PATH"
+            # Si es una sección, añadir dentro de la sección
+            if [[ -n "$current_section" ]]; then
+                # Añadir justo después de la sección si existe
+                if grep -q "^\[$current_section\]" "$target_file"; then
+                    sed -i "/^\[$current_section\]/a$key=$value" "$target_file"
+                else
+                    # Si no existe la sección, crearla y añadir la clave
+                    echo -e "\n[$current_section]\n$key=$value" >> "$target_file"
+                fi
+            else
+                echo "$key=$value" >> "$target_file"
+            fi
         fi
     done < "$EXTRA_INI_PATH"
 fi
