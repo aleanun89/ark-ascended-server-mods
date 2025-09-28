@@ -70,6 +70,7 @@ RUN mkdir "$ARK_PATH" \
     
 COPY entrypoint.sh /home/steam/entrypoint.sh
 COPY utils.sh /home/steam/utils.sh
+COPY extra.ini /home/steam/extra.ini
 
 WORKDIR /home/steam
 
