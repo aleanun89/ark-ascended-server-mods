@@ -11,12 +11,14 @@ services:
       - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
-      - CLUSTER_ID=arkcluster
+      - CLUSTER_ID=arkclusterva
+      - CLUSTER_DIR_OVERRIDE=/home/steam/ark/ShooterGame/Saved/Cluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
+      - ./cluster:/home/steam/ark/ShooterGame/Saved/Cluster
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
 
@@ -32,13 +34,15 @@ services:
       - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
-      - CLUSTER_ID=arkcluster
+      - CLUSTER_ID=arkclusterva
+      - CLUSTER_DIR_OVERRIDE=/home/steam/ark/ShooterGame/Saved/Cluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+      - ./cluster:/home/steam/ark/ShooterGame/Saved/Cluster
 
   ragnarok:
     image: ark-ascended-server-alex:latest
@@ -52,12 +56,14 @@ services:
       - SERVER_ADMIN_PASSWORD=Alex_25
       - GAME_PORT=7777
       - RCON_PORT=27020
-      - CLUSTER_ID=arkcluster
+      - CLUSTER_ID=arkclusterva
+      - CLUSTER_DIR_OVERRIDE=/home/steam/ark/ShooterGame/Saved/Cluster
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
+      - ./cluster:/home/steam/ark/ShooterGame/Saved/Cluster
 
 # No se requieren volumes de Docker, se usan bind mounts locales

@@ -63,6 +63,15 @@ if [ -z "$SERVER_ADMIN_PASSWORD" ]; then
 fi
 
 # Check for correct ownership
+# ClusterDirOverride support
+if [ -n "$CLUSTER_DIR_OVERRIDE" ]; then
+    CLUSTER_DIR_OVERRIDE_ARG="-ClusterDirOverride=\"$CLUSTER_DIR_OVERRIDE\""
+elif grep -q '^ClusterDirOverride=' /container/extra.ini; then
+    CLUSTER_DIR_OVERRIDE=$(grep '^ClusterDirOverride=' /container/extra.ini | cut -d'=' -f2-)
+    CLUSTER_DIR_OVERRIDE_ARG="-ClusterDirOverride=\"$CLUSTER_DIR_OVERRIDE\""
+else
+    CLUSTER_DIR_OVERRIDE_ARG=""
+fi
 if ! touch "${ARK_PATH}/ShooterGame/Saved/test"; then
     echo ""
     echo "$(timestamp) ERROR: The ownership of /home/steam/ark/ShooterGame/Saved is not correct and the server will not be able to save..."
@@ -104,39 +113,42 @@ if [ -f "$EXTRA_INI_PATH" ]; then
     echo "$(timestamp) INFO: Procesando extra.ini para aplicar configuraciones profesionales"
     current_section=""
     while IFS= read -r line; do
-        # Saltar líneas vacías o comentarios
         [[ -z "$line" || "$line" =~ ^# ]] && continue
-        # Detectar sección
         if [[ "$line" =~ ^\[(.*)\]$ ]]; then
             current_section="${BASH_REMATCH[1]}"
             continue
         fi
         key="${line%%=*}"
         value="${line#*=}"
-        # Elegir archivo destino según sección
-        case "$current_section" in
-            ServerSettings)
-                target_file="$GAME_USERSETTINGS_PATH"
-                ;;
-            *)
-                target_file="$GAME_INI_PATH"
-                ;;
-        esac
-        # Si la clave existe en el archivo destino, reemplazarla
-        if grep -q "^$key=" "$target_file"; then
-            sed -i "s|^$key=.*|$key=$value|" "$target_file"
-        else
-            # Si es una sección, añadir dentro de la sección
-            if [[ -n "$current_section" ]]; then
-                # Añadir justo después de la sección si existe
-                if grep -q "^\[$current_section\]" "$target_file"; then
-                    sed -i "/^\[$current_section\]/a$key=$value" "$target_file"
-                else
-                    # Si no existe la sección, crearla y añadir la clave
-                    echo -e "\n[$current_section]\n$key=$value" >> "$target_file"
-                fi
+        # Detectar si es parámetro avanzado para Game.ini
+        if [[ "$key" =~ ^(PerLevelStatsMultiplier_|ExperiencePointsForLevel|DinoSpawnWeightMultipliers|OverrideEngramEntries|OverrideNamedEngramEntries|EngramEntryAutoUnlocks|ConfigOverrideNPCSpawnEntriesContainer|ConfigAddNPCSpawnEntriesContainer|ConfigSubtractNPCSpawnEntriesContainer|ConfigOverrideSupplyCrateItems|PlayerBaseStatMultipliers|MutagenLevelBoost|MutagenLevelBoost_Bred) ]]; then
+            # Asegurar sección [/script/shootergame.shootergamemode] en Game.ini
+            if ! grep -q "^\[/script/shootergame.shootergamemode\]" "$GAME_INI_PATH"; then
+                echo -e "\n[/script/shootergame.shootergamemode]" >> "$GAME_INI_PATH"
+            fi
+            # Añadir o reemplazar en la sección
+            if grep -A 1000 "^\[/script/shootergame.shootergamemode\]" "$GAME_INI_PATH" | grep -q "^$key="; then
+                awk -v section="\[/script/shootergame.shootergamemode\]" -v key="$key" -v value="$value" '
+                    $0 == section {print; in_section=1; next}
+                    in_section && $0 ~ "^"key"=" {print key"="value; in_section=0; next}
+                    {print}
+                ' "$GAME_INI_PATH" > "$GAME_INI_PATH.tmp" && mv "$GAME_INI_PATH.tmp" "$GAME_INI_PATH"
             else
-                echo "$key=$value" >> "$target_file"
+                sed -i "/^\[/script/shootergame.shootergamemode\]/a$key=$value" "$GAME_INI_PATH"
+            fi
+        else
+            # El resto va a GameUserSettings.ini bajo [ServerSettings]
+            if ! grep -q "^\[ServerSettings\]" "$GAME_USERSETTINGS_PATH"; then
+                echo -e "\n[ServerSettings]" >> "$GAME_USERSETTINGS_PATH"
+            fi
+            if grep -A 1000 "^\[ServerSettings\]" "$GAME_USERSETTINGS_PATH" | grep -q "^$key="; then
+                awk -v section="\[ServerSettings\]" -v key="$key" -v value="$value" '
+                    $0 == section {print; in_section=1; next}
+                    in_section && $0 ~ "^"key"=" {print key"="value; in_section=0; next}
+                    {print}
+                ' "$GAME_USERSETTINGS_PATH" > "$GAME_USERSETTINGS_PATH.tmp" && mv "$GAME_USERSETTINGS_PATH.tmp" "$GAME_USERSETTINGS_PATH"
+            else
+                sed -i "/^\[ServerSettings\]/a$key=$value" "$GAME_USERSETTINGS_PATH"
             fi
         fi
     done < "$EXTRA_INI_PATH"
@@ -179,6 +191,11 @@ LAUNCH_COMMAND="${LAUNCH_COMMAND} -port=${GAME_PORT}"
 
 if [ -n "${EXTRA_FLAGS}" ]; then
     LAUNCH_COMMAND="${LAUNCH_COMMAND} ${EXTRA_FLAGS}"
+fi
+
+# Añadir ClusterDirOverride si está definido
+if [ -n "$CLUSTER_DIR_OVERRIDE_ARG" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND} $CLUSTER_DIR_OVERRIDE_ARG"
 fi
 
 # RCONEnabled in server start args doesn't seem to actually enabled RCON, so let's do it manually
