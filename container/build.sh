@@ -6,6 +6,6 @@ set -e
 IMAGE_NAME="ark-ascended-server-alex"
 TAG="latest"
 
-podman build -t ${IMAGE_NAME}:${TAG} -f Containerfile .
+docker build -t ${IMAGE_NAME}:${TAG} -f Containerfile .
 
 echo "Imagen construida: ${IMAGE_NAME}:${TAG}"
