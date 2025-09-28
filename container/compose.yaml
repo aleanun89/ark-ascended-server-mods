@@ -5,7 +5,7 @@ services:
       - "7777:7777/udp"
       - "27020:27020/tcp"
     environment:
-      - SESSION_NAME=Valoria Ark ASA - The Island
+      - SESSION_NAME=ValoriaArkASA-The Island
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=TheIsland_WP
       - SERVER_ADMIN_PASSWORD=Alex_25
@@ -26,7 +26,7 @@ services:
       - "7778:7777/udp"
       - "27021:27020/tcp"
     environment:
-      - SESSION_NAME=Valoria Ark ASA - Scorched Earth
+      - SESSION_NAME=ValoriaArkASA-Scorched Earth
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=ScorchedEarth_WP
       - SERVER_ADMIN_PASSWORD=Alex_25
@@ -46,7 +46,7 @@ services:
       - "7779:7777/udp"
       - "27022:27020/tcp"
     environment:
-      - SESSION_NAME=Valoria Ark ASA - Ragnarok
+      - SESSION_NAME=ValoriaArkASA-Ragnarok
       - SERVER_PASSWORD=Valoria
       - SERVER_MAP=Ragnarok_WP
       - SERVER_ADMIN_PASSWORD=Alex_25
