@@ -1,0 +1,16 @@
+# Ignorar archivos y carpetas generados por el sistema y contenedores
+/run/
+*.pyc
+__pycache__/
+.env
+*.log
+*.sqlite3
+.DS_Store
+*.bak
+*.swp
+# Ignorar carpetas de datos de ARK
+container/theisland/
+container/scorchedearth/
+container/ragnarok/
+webadmin/backups/
+run/
