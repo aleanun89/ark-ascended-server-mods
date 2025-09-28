@@ -22,6 +22,16 @@ services:
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
 
 
+      dynamicconfig:
+        image: python:3.11-slim
+        container_name: dynamicconfig
+        working_dir: /srv
+        command: python -m http.server 8080 --bind 0.0.0.0
+        ports:
+          - "8080:8080"
+        volumes:
+          - ./dynamicconfig:/srv:ro
+        restart: unless-stopped
   scorchedearth:
     image: ark-ascended-server-alex:latest
     ports:

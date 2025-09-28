@@ -199,17 +199,16 @@ if [ -n "$CLUSTER_DIR_OVERRIDE_ARG" ]; then
 fi
 
 # RCONEnabled in server start args doesn't seem to actually enabled RCON, so let's do it manually
-if ! [ -f "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini" ]; then
-    mkdir -p ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer
-    cat <<EOF > ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
-[ServerSettings]
-RCONEnabled=True
-RCONPort=${RCON_PORT}
-EOF
-elif [ ! grep "RCONEnabled" ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini ]; then
-    sed -i "s/RCONPort=[0-9]*/RCONPort=${RCON_PORT}\nRCONEnabled=True/" ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
-elif [ grep "RCONEnabled=False" ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini ]; then
-    sed -i "s/RCONEnabled=False/RCONEnabled=True/" ${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
+if [ ! -f "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini" ]; then
+    mkdir -p "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer"
+    printf "[ServerSettings]\nRCONEnabled=True\nRCONPort=%s\n" "${RCON_PORT}" > "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+elif ! grep -q "RCONEnabled" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"; then
+    # Añadir RCONEnabled=True después de RCONPort
+    awk '/RCONPort=/ {print; print "RCONEnabled=True"; next} {print}' "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini" > "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini.tmp" && mv "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini.tmp" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+    sed -i "s/RCONPort=[0-9]*/RCONPort=${RCON_PORT}/" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+elif grep -q "RCONEnabled=False" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"; then
+    sed -i "s/RCONEnabled=False/RCONEnabled=True/" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+    sed -i "s/RCONPort=[0-9]*/RCONPort=${RCON_PORT}/" "${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
 fi
 
 echo ""
