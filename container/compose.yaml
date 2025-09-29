@@ -16,6 +16,7 @@ services:
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
+      - DYNAMIC_CONFIG_URL=http://dynamicconfig:8080/dynamicconfig.ini
     volumes:
       - ./theisland:/home/steam/ark/ShooterGame/Saved
       - ./cluster:/home/steam/ark/ShooterGame/Saved/Cluster
@@ -50,6 +51,7 @@ services:
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
+      - DYNAMIC_CONFIG_URL=http://dynamicconfig:8080/dynamicconfig.ini
     volumes:
       - ./scorchedearth:/home/steam/ark/ShooterGame/Saved
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro
@@ -72,6 +74,7 @@ services:
       - ENABLE_CROSS_TRAVEL=true
       - MOD_IDS=947033,929800,929868,1019389,942024,929489
       - MAX_PLAYERS=8
+      - DYNAMIC_CONFIG_URL=http://dynamicconfig:8080/dynamicconfig.ini
     volumes:
       - ./ragnarok:/home/steam/ark/ShooterGame/Saved
       - ./extra.ini:/home/steam/ark/ShooterGame/Saved/Config/WindowsServer/extra.ini:ro

@@ -109,50 +109,6 @@ fi
 EXTRA_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/extra.ini"
 GAME_INI_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
 GAME_USERSETTINGS_PATH="${ARK_PATH}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
-if [ -f "$EXTRA_INI_PATH" ]; then
-    echo "$(timestamp) INFO: Procesando extra.ini para aplicar configuraciones profesionales"
-    current_section=""
-    while IFS= read -r line; do
-        [[ -z "$line" || "$line" =~ ^# ]] && continue
-        if [[ "$line" =~ ^\[(.*)\]$ ]]; then
-            current_section="${BASH_REMATCH[1]}"
-            continue
-        fi
-        key="${line%%=*}"
-        value="${line#*=}"
-        # Detectar si es parámetro avanzado para Game.ini
-        if [[ "$key" =~ ^(PerLevelStatsMultiplier_|ExperiencePointsForLevel|DinoSpawnWeightMultipliers|OverrideEngramEntries|OverrideNamedEngramEntries|EngramEntryAutoUnlocks|ConfigOverrideNPCSpawnEntriesContainer|ConfigAddNPCSpawnEntriesContainer|ConfigSubtractNPCSpawnEntriesContainer|ConfigOverrideSupplyCrateItems|PlayerBaseStatMultipliers|MutagenLevelBoost|MutagenLevelBoost_Bred) ]]; then
-            # Asegurar sección [/script/shootergame.shootergamemode] en Game.ini
-            if ! grep -q "^\[/script/shootergame.shootergamemode\]" "$GAME_INI_PATH"; then
-                echo -e "\n[/script/shootergame.shootergamemode]" >> "$GAME_INI_PATH"
-            fi
-            # Añadir o reemplazar en la sección
-            if grep -A 1000 "^\[/script/shootergame.shootergamemode\]" "$GAME_INI_PATH" | grep -q "^$key="; then
-                awk -v section="\[/script/shootergame.shootergamemode\]" -v key="$key" -v value="$value" '
-                    $0 == section {print; in_section=1; next}
-                    in_section && $0 ~ "^"key"=" {print key"="value; in_section=0; next}
-                    {print}
-                ' "$GAME_INI_PATH" > "$GAME_INI_PATH.tmp" && mv "$GAME_INI_PATH.tmp" "$GAME_INI_PATH"
-            else
-                sed -i "/^\[/script/shootergame.shootergamemode\]/a$key=$value" "$GAME_INI_PATH"
-            fi
-        else
-            # El resto va a GameUserSettings.ini bajo [ServerSettings]
-            if ! grep -q "^\[ServerSettings\]" "$GAME_USERSETTINGS_PATH"; then
-                echo -e "\n[ServerSettings]" >> "$GAME_USERSETTINGS_PATH"
-            fi
-            if grep -A 1000 "^\[ServerSettings\]" "$GAME_USERSETTINGS_PATH" | grep -q "^$key="; then
-                awk -v section="\[ServerSettings\]" -v key="$key" -v value="$value" '
-                    $0 == section {print; in_section=1; next}
-                    in_section && $0 ~ "^"key"=" {print key"="value; in_section=0; next}
-                    {print}
-                ' "$GAME_USERSETTINGS_PATH" > "$GAME_USERSETTINGS_PATH.tmp" && mv "$GAME_USERSETTINGS_PATH.tmp" "$GAME_USERSETTINGS_PATH"
-            else
-                sed -i "/^\[ServerSettings\]/a$key=$value" "$GAME_USERSETTINGS_PATH"
-            fi
-        fi
-    done < "$EXTRA_INI_PATH"
-fi
 
 # Link logfile to stdout of pid 1 so we can see logs
 ln -sf /proc/1/fd/1 "${ARK_PATH}/ShooterGame/Saved/Logs/ShooterGame.log"
@@ -188,6 +144,12 @@ LAUNCH_COMMAND="${LAUNCH_COMMAND}?ServerAdminPassword=${SERVER_ADMIN_PASSWORD}"
 
 # According to Wiki, game port is not a ? deliniated command
 LAUNCH_COMMAND="${LAUNCH_COMMAND} -port=${GAME_PORT}"
+
+
+# Añadir DynamicConfig si está definido
+if [ -n "${DYNAMIC_CONFIG_URL}" ]; then
+    LAUNCH_COMMAND="${LAUNCH_COMMAND} -UseDynamicConfig -CustomDynamicConfigUrl=\"${DYNAMIC_CONFIG_URL}\""
+fi
 
 if [ -n "${EXTRA_FLAGS}" ]; then
     LAUNCH_COMMAND="${LAUNCH_COMMAND} ${EXTRA_FLAGS}"
